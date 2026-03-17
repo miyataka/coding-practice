@@ -139,3 +139,13 @@ func deleteDuplicates(head *ListNode) *ListNode {
 ```
 - 短く，単純になった．
 - ので，これをなにも見ずに5回一発で通すようにした．
+
+---
+# after memo
+- 直近の別の方のPRをいくつかみると，再帰や番兵と言った手法が挙げられている．これらの選択肢も挙げられるようになる必要がある．
+    - https://github.com/attractal/leetcode/pull/3/changes
+    - https://github.com/Manato110/LeetCode-arai60/pull/3/changes
+    - https://github.com/TakashiMITANI/SWEAssociationOnlineCodingPractice/pull/17/changes
+- あとはこれまで書いてなかったけど，時間計算量や空間計算量について検討してメモしたほうがよさそうだ（間違ったら指摘してもらえる）
+    - 長さNのリストを一度ループするだけなので，時間計算量としてはO(n)
+    - in-placeにできたので，空間計算量はO(1)
