@@ -1,6 +1,5 @@
-
-
 # 1回目
+
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     // setに全部いれる．全部取得して，小さい順に並べ直す. いやこれもやる必要はないか．
@@ -25,7 +24,9 @@ func deleteDuplicates(head *ListNode) *ListNode {
 ```
 - これはfail.
 
+
 # 2回目
+
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     // すでにソートされているのだから，順番に舐めていって，直前とことなったらpickすればよい
@@ -63,7 +64,9 @@ func deleteDuplicates(head *ListNode) *ListNode {
 - 後続のノードがresultにはいってしまっていた．
 - コードが冗長なので，次のステップで改善する
 
+
 # 3回目
+
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     // すでにソートされているのだから，順番に舐めていって，直前とことなったらpickすればよい
@@ -94,7 +97,9 @@ func deleteDuplicates(head *ListNode) *ListNode {
 - ちょっとマシに．
 - prevとかheadのガードとかうまいこと消せそうな
 
+
 # 4回目
+
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     // すでにソートされているのだから，順番に舐めていって，**直後**と異なったらpickすればよい
@@ -120,7 +125,9 @@ func deleteDuplicates(head *ListNode) *ListNode {
 - あまり綺麗にならなかった
 - のでLLMにアドバイスもらって，「削除なんだからin-placeでやるのが自然だろ」と言われた．いや〜そうだね．ということで次．
 
+
 # 5回目
+
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     // すでにソートされているのだから，順番に舐めていって，**直後**と異なったらpickすればよい
@@ -141,7 +148,9 @@ func deleteDuplicates(head *ListNode) *ListNode {
 - ので，これをなにも見ずに5回一発で通すようにした．
 
 ---
+
 # after memo
+
 - 直近の別の方のPRをいくつかみると，再帰や番兵と言った手法が挙げられている．これらの選択肢も挙げられるようになる必要がある．
     - https://github.com/attractal/leetcode/pull/3/changes
     - https://github.com/Manato110/LeetCode-arai60/pull/3/changes
