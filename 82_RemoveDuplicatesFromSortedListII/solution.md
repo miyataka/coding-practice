@@ -105,3 +105,7 @@ func deleteDuplicates(head *ListNode) *ListNode {
 - dummyは壁に固定された杭，prevはチェック済みを示すしるしと想像するとなんとなくわかった気がする
 - 最初にheadを壁に固定してやる（dummyにつなぐ），みたいな想像
 - これを3回連続で書いた
+
+P.S.
+- `prev` は `previous_node`, `cur` は `current_node` のほうがよかったかも
+    - https://github.com/hemispherium/LeetCode_Arai60/pull/10#discussion_r2618518592
