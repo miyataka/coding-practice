@@ -18,7 +18,7 @@ https://leetcode.com/problems/word-ladder
 ---
 
 # 見積もり
-- 入力サイズ: N = len(wordList) ≤ 5 * 10^3、L = 単語長 ≤ 10、アルファベット 26 種
+- 入力サイズ: N = len(wordList) ≤ 5000、L = 単語長 ≤ 10、アルファベット 26 種
 - 時間計算量: O(N * L * 26)
   - 実行時間の見積もり: N=5000, L=10 なので，5*10^4*26 = 1.3 * 10^6
   - 1.3 * 10^6 / 10^8 = 1.3 * 10^-2 s = 13ms
@@ -96,6 +96,81 @@ func ladderLength(beginWord, endWord string, wordList []string) int {
     - 層ごとに処理するため，next を用意する．最後にqueueを置き換えるのを忘れずに書いておく．stepsをインクリメントする．
 - 層に含まれるものを全部処理するためのループを作る．
     - 終了条件，今回の場合はendWordとの一致を調べる．一致したらstepsを返して終了
-    -
-    word文字列を，先頭から一文字ずつ置き換えた文字列を作ってwordList/wordsに存在するかをチェックし，存在すれば次の探索層に追加．かつvisitedとしてマーク
+    - word文字列を，先頭から一文字ずつ置き換えた文字列を作ってwordList/wordsに存在するかをチェックし，存在すれば次の探索層に追加．かつvisitedとしてマーク
 - 全部の処理が終わって抜けてきた処理は，経路なしとしてreturn 0
+
+# 2回目
+- 典型コメント https://docs.google.com/document/d/11HV35ADPo9QxJOpJQ24FcZvtvioli770WWdZZDaLOfg/edit?tab=t.0
+    - pythonのgenerator概念はいまいちわからん．Goではあまりやらなそうだなと感じる． 自分の使える言語だとrubyではできたような記憶があるが，そのときはあまりそこまでの理解がなかった．ので覚えていない
+- 他の人のコードをみる
+    - https://github.com/h-masder/Arai60/pull/21
+        - やっぱ初見では悩むよなと，ただの共感．
+        - 典型コメントでも思ったが，pythonのgeneratorについてあまりわかっていないが深追いせず．
+    - https://github.com/rimokem/arai60/pull/20
+    - https://github.com/komdoroid/arai60/pull/16
+        - used_wordsという命名はよさそうだ．自分のvisitedという命名はBFSに引っ張られすぎていたかも．
+        - いや，やっぱvisitedでも変わらんなという気持ちになった．
+    - https://github.com/hiroki-horiguchi-dev/leetcode/pull/19
+        - MiddleWordAndDepthというのはどこに定義されているのか一瞬わからなかった．（ただの感想）
+        - あらたにユーザー定義型として作るのはちょっとやりすぎと感じた．おそらく，定義を探すのは手間なわりに，あまりコードの理解に貢献しないので．
+    - https://github.com/nicah4o/arai60/pull/19
+        - 今回の制約を使うと，eraseする方法があるというのはなるほど．
+    - https://github.com/tNita/arai60/pull/19
+        - 1文字を任意にしたhashmap, なるほどと思うけど，構築コストの割にあうのかは微妙かもという感じをうける
+        - 探索範囲がascii小文字に限らない場合，割にあうようになるのだろう．
+        - 双方向BFSという解法があるようだ. LLMの解説を読んでおく
+    - https://github.com/quinn-sasha/leetcode/pull/32
+- みんなあまりLLMに回答を出力させないのかな，という感想．
+    - 自分はわからないときは，生成させて，それに自分で日本語コメントをつけて，つけたところはコードを消す，を繰り返して，日本語だけ残す.
+    - 日本語に対応するコードをなんとなく思い出せるようになったら書く．という感じにしてる．
+- 一字変えたものを判定する処理は関数に切り出そうかな
+    - と思ったが，効率的なisNeighborやoneLetterNeighborsのような名称の関数を書くにはwordsを渡す必要があり，ちょっとそれだと関数名に現れてこない意味を含んでしまうと思って関数化をやめた
+    - O(N^2)なら作れるけど，悪化しすぎる．
+
+# 3回目
+```go
+func ladderLength(beginWord, endWord string, wordList []string) int {
+    words := map[string]bool{}
+    for _, w := range wordList {
+        words[w] = true
+    }
+    if !words[endWord] {
+        return 0
+    }
+
+    queue := []string{beginWord}
+    visited := map[string]bool{beginWord: true}
+    step := 1
+
+    for 0 < len(queue) {
+        next := []string{}
+        for _, word := range queue {
+            if endWord == word {
+                return step
+            }
+
+            letters := []byte(word)
+            for i := range letters {
+                original := letters[i]
+                for c := byte('a'); c <= byte('z'); c++ {
+                    if c == original {
+                        continue
+                    }
+                    letters[i] = c
+                    candidate := string(letters)
+                    if words[candidate] && !visited[candidate] {
+                        visited[candidate] = true
+                        next = append(next, candidate)
+                    }
+                }
+                letters[i] = original
+            }
+        }
+
+        queue = next
+        step++
+    }
+    return 0
+}
+```
+- これを3回書いた
