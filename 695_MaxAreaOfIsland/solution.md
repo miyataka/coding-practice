@@ -31,7 +31,7 @@ https://leetcode.com/problems/max-area-of-island
 - 時間計算量: O(m*n)
   - 実行時間の見積もり: 2.5*10^3 / 10^8 ≈ 2.5*10^-5 s = 0.025ms
 - 空間計算量: O(m*n)
-  - 必要メモリの見積もり: grid ヘッダ(address(8)+cap(8)+len(8)=24) + i,j(16) = 40byte * m*n = 1*10^5 = 100kb
+  - 必要メモリの見積もり: grid ヘッダ(address(8)+cap(8)+len(8)=24) + i,j(16) = 40byte * m*n = 40 * 2.5*10^3 = 1*10^5 = 100kb
 
 # 1回目
 ```go
