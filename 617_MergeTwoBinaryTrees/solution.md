@@ -223,7 +223,17 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 ```
 - これも一度自力で書いてみようとして，時間かかったので，LLMに聞いたもの．
     - 自力でやろうとしたとき，あれ，parentとかどうすんだっけ？という点は番兵とparent, left or notという情報を加えることで解決されている．やっぱその情報必要だよな，と思ったのと，parent一番最初に自力で解こうとしたときの方針を完走できればこれっぽくなったんだろうなという気持ち
-- 自分の理解でかきくださう
+- 自分の理解でかきくだすとこんな感じ
+    - dummyを作る
+    - taskを定義して，tasksというstackを作る
+        - root1,root2を積む．dummyのLeftということにしておく
+    - tasksがある限りループする
+    - n1,n2両方がnilならskip
+    - val, left1, right1, left2, right2を宣言して情報を集める
+    - newNodeを宣言して，parentにつなげておく
+    - LeftとRightをtasksとして積む
+    - return dummy.Left
+
 
 # 3回目
 ```go
