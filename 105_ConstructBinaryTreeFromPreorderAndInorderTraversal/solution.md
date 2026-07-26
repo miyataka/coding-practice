@@ -160,6 +160,8 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
         - みんなわりと難しがっているな．その3
 
 # 3回目
+
+## recursive DFS
 ```go
 /**
  * Definition for a binary tree node.
@@ -192,4 +194,53 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
     }
 }
 ```
-- これを3回繰り返した
+
+## iterative DFS
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+import "slices"
+
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    type task struct {
+        nodeAddress **TreeNode
+        preorder []int
+        inorder []int
+    }
+
+    result := &TreeNode{}
+    tasks := []task{{nodeAddress: &result, preorder: preorder, inorder: inorder}}
+
+    for len(tasks) > 0 {
+        t := tasks[len(tasks)-1]
+        tasks = tasks[:len(tasks)-1]
+        nodeAddress, subPreorder, subInorder := t.nodeAddress, t.preorder, t.inorder
+
+        if len(subPreorder) == 0 && len(subInorder) == 0 {
+            continue
+        }
+
+        root := subPreorder[0]
+        rootIndex := slices.Index(subInorder, root)
+        node := &TreeNode{Val: root}
+        *nodeAddress = node
+
+        leftInorder := subInorder[:rootIndex]
+        rightInorder := subInorder[rootIndex+1:]
+
+        leftPreorder := subPreorder[1:1+len(leftInorder)]
+        rightPreorder := subPreorder[1+len(leftInorder):]
+
+        tasks = append(tasks, task{nodeAddress: &node.Left, preorder: leftPreorder, inorder: leftInorder})
+        tasks = append(tasks, task{nodeAddress: &node.Right, preorder: rightPreorder, inorder: rightInorder})
+    }
+    return result
+}
+```
+- これをそれぞれ3回繰り返した
