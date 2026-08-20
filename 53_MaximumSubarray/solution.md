@@ -101,3 +101,70 @@ func maxSubArray(nums []int) int {
     return maxVal
 }
 ```
+
+# 1回目 v3 (LLMからの回答）
+```go
+// exclusiveな累積和 `P` を考える．`P[0] = 0, P[i] = nums[0]+...+nums[i-1]`,
+// 求めたいのは，max(P[r] - P[l]) (l<r). 右端rが固定値の時，P[l]はそれまでで最小になればよい
+// なので，累積和から，それまでの最小累積和の値を引いてやれば，そのときのsubarrayの最大値をとれる
+// 最大値を求めながらnumsを一周すればOK
+func maxSubArray(nums []int) int {
+    maxSum := nums[0]
+    prefixSum := 0
+    minPrefixSum := 0
+    for _, n := range nums {
+        prefixSum += n
+        maxSum = max(maxSum, prefixSum-minPrefixSum)
+        minPrefixSum = min(minPrefixSum, prefixSum)
+    }
+    return maxSum
+}
+```
+- わからんかったのでLLMに確認した
+- v1を書いたあとに最小値を求める計算を何度もやる必要がないことに気づければよかった
+
+# 2回目
+```go
+func maxSubArray(nums []int) int {
+    maxVal := nums[0]
+    prefixSum := 0
+    minPrefixSum := 0
+    for _, n := range nums {
+        prefixSum += n
+        maxVal = max(maxVal, prefixSum-minPrefixSum)
+        minPrefixSum = min(minPrefixSum, prefixSum)
+    }
+    return maxVal
+}
+```
+- maxSumをmaxValにrenameしたくらい
+- 他の人のコードを読む
+- https://github.com/MA-yo-TA/leetcode/pull/31
+    - https://github.com/MA-yo-TA/leetcode/pull/31/changes#r3823308446
+    - > 二つのloopは一つにすることができそうです
+        prefix_sum[i] は足し合わせていけばタイムリーにとれる
+- https://github.com/chryschron/codings/pull/30
+    - この人のコードどうこうではなく，DPに関して全然自分の頭が馴染んでいないのだなという感覚がする
+- https://github.com/skypenguins/coding-practice/pull/34
+    - kadane法, まだ頭に馴染んでない
+- https://github.com/rimokem/arai60/pull/32
+- https://github.com/tom4649/Coding/pull/130
+    - 自分と解き方が違いすぎて，さっと読めない．読める幅を広げないとなぁ
+- https://github.com/h-masder/Arai60/pull/35
+
+# 3回目
+```go
+func maxSubArray(nums []int) int {
+    maxVal := nums[0]
+    prefixSum := 0
+    minPrefixSum := 0
+    for _, n := range nums {
+        prefixSum += n
+        maxVal = max(maxVal, prefixSum - minPrefixSum)
+        minPrefixSum = min(minPrefixSum, prefixSum)
+    }
+    return maxVal
+}
+```
+- これを3回繰り返した
+- 正直DPは全然理解が追いついていないがある程度回数をこなすしかないのだろうと思って先に進む
