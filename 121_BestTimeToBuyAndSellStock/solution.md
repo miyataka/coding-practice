@@ -110,6 +110,7 @@ func maxProfit(prices []int) int {
         - 個人的にはこの問題を解く場合には可読性を優先したい. min/maxを選ぶ
     - https://github.com/h-masder/Arai60/pull/40
         - 自分も遠回りしてしまったので，すこし共感
+- https://docs.google.com/document/d/11HV35ADPo9QxJOpJQ24FcZvtvioli770WWdZZDaLOfg/edit?tab=t.0#heading=h.8qw2um7il4s5
 
 
 # 3回目
